@@ -3,7 +3,7 @@ DATASET_ZIP := spotify-metadata-by-annas-archive.zip
 DATA_DIR := data
 S3_BUCKET := noah-annasarchive-spotify-metadata
 
-.PHONY: download extract upload pipeline clean
+.PHONY: download extract upload pipeline
 
 ## Run full pipeline: download, extract, upload
 pipeline: download extract upload
@@ -19,10 +19,7 @@ extract:
 
 ## Upload extracted data to S3
 upload:
-	aws s3 sync $(DATA_DIR)/extracted/ s3://$(S3_BUCKET)/ \
-		--no-progress \
-		--only-show-errors
+	aws s3 sync $(DATA_DIR)/extracted/ s3://$(S3_BUCKET)/raw
 
-## Remove local data files
-clean:
-	rm -rf $(DATA_DIR)
+
+
