@@ -10,6 +10,13 @@ The dataset (~100GB+ compressed) is downloaded, extracted, and uploaded to S3.
 Kaggle --curl--> EC2 (t3.micro, 500GB gp3) --s3 sync--> S3 bucket
 ```
 
+## Setup
+
+```bash
+cp .env.example .env
+# Edit .env with your actual values
+```
+
 ## Usage
 
 ### Run the pipeline locally
