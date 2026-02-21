@@ -1,7 +1,4 @@
-DATASET_URL := https://www.kaggle.com/api/v1/datasets/download/lordpatil/spotify-metadata-by-annas-archive
-DATASET_ZIP := spotify-metadata-by-annas-archive.zip
-DATA_DIR := data
-S3_BUCKET := noah-annasarchive-spotify-metadata
+include .env
 
 .PHONY: download extract upload pipeline
 
