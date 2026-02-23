@@ -4,11 +4,7 @@ Spotify metadata dataset from [Anna's Archive on Kaggle](https://www.kaggle.com/
 
 ## Architecture
 
-The dataset (~100GB+ compressed) is downloaded, extracted, and uploaded to S3.
-
-```
-Kaggle --curl--> EC2 (t3.micro, 500GB gp3) --s3 sync--> S3 bucket
-```
+**Ingestion**: The dataset (~100GB+ compressed) is downloaded, extracted, and uploaded to S3.
 
 ## Setup
 
