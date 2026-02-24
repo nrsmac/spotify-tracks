@@ -3,7 +3,7 @@ include .env
 .PHONY: download extract upload pipeline load-to-md
 
 ## Run full pipeline: download, extract, upload
-pipeline: download extract upload
+pipeline: download extract upload load-from-s3-to-md
 
 ## Download dataset from Kaggle
 download:
@@ -20,4 +20,4 @@ upload:
 
 ## Load raw data from S3 into MotherDuck
 load-to-md:
-	S3_BUCKET=$(S3_BUCKET) envsubst < load_to_motherduck.sql | duckdb md:
+	S3_BUCKET=$(S3_BUCKET) envsubst < load_from_s3_to_motherduck.sql | duckdb md:

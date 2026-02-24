@@ -1,6 +1,6 @@
 # Spotify Tracks
 
-Analysis of the [Anna's Archive Spotify 2025-07 metadata backup](https://annas-archive.org/datasets/spotify_2025_07) — a snapshot of Spotify's public catalog API covering **256M tracks, 58M albums, 15M artists, 768 genres, and 6.6M playlists** with 1.7B playlist-track entries. Licensed Apache 2.0.
+Analysis of the [Anna's Archive Spotify 2025-07 metadata backup](https://annas-archive.org/datasets/spotify_2025_07) — a snapshot of Spotify's public catalog API covering **256M tracks, 58M albums, 15M artists, 768 genres, and 6.6M playlists** with 1.7B playlist-track entries. 
 
 Raw data lives in MotherDuck at `spotify.raw` (15 tables). dbt models in `dbt/` build staging and mart layers on top of it.
 
@@ -59,9 +59,19 @@ Raw data lives in MotherDuck at `spotify.raw` (15 tables). dbt models in `dbt/` 
 
 ## Setup
 
+This project uses [uv](https://docs.astral.sh/uv/) for Python dependency management. Install it first:
+
+```bash
+curl -LsSf https://astral.sh/uv/install.sh | sh
+```
+
+Then set up the project:
+
 ```bash
 cp .env.example .env
 # Edit .env with your actual values
+
+uv sync  # install Python dependencies
 ```
 
 AWS credentials must be available via the [credential provider chain](https://docs.aws.amazon.com/sdkref/latest/guide/standardized-credentials.html) (environment variables, `~/.aws/credentials`, IAM role, etc.).
@@ -80,6 +90,7 @@ Or individual stages:
 make download    # download zip from Kaggle
 make extract     # extract to data/extracted/
 make upload      # sync to S3
+make load-to-md      # load tables to MotherDuck
 ```
 
 ### Load into MotherDuck
