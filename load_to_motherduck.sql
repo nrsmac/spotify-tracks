@@ -77,18 +77,18 @@ CREATE OR REPLACE TABLE spotify.raw.artist_redirects AS
 
 .print [16/19] Loading audiobook_chapters...
 CREATE OR REPLACE TABLE spotify.raw.audiobook_chapters AS
-  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_audiobook_chapters.jsonl.zst', format='newline_delimited', compression='zstd');
+  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_audiobook_chapters.jsonl.zst', format='newline_delimited', compression='zstd', union_by_name=true);
 
 .print [17/19] Loading audiobooks...
 CREATE OR REPLACE TABLE spotify.raw.audiobooks AS
-  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_audiobooks.jsonl.zst', format='newline_delimited', compression='zstd');
+  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_audiobooks.jsonl.zst', format='newline_delimited', compression='zstd', union_by_name=true);
 
 .print [18/19] Loading show_episodes...
 CREATE OR REPLACE TABLE spotify.raw.show_episodes AS
-  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_show_episodes.jsonl.zst', format='newline_delimited', compression='zstd');
+  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_show_episodes.jsonl.zst', format='newline_delimited', compression='zstd', union_by_name=true);
 
 .print [19/19] Loading shows...
 CREATE OR REPLACE TABLE spotify.raw.shows AS
-  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_shows.jsonl.zst', format='newline_delimited', compression='zstd');
+  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_shows.jsonl.zst', format='newline_delimited', compression='zstd', union_by_name=true);
 
 .print All 19 tables loaded into spotify.raw
