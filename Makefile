@@ -1,6 +1,6 @@
 include .env
 
-.PHONY: download extract upload pipeline
+.PHONY: download extract upload pipeline load-to-md
 
 ## Run full pipeline: download, extract, upload
 pipeline: download extract upload
@@ -18,5 +18,6 @@ extract:
 upload:
 	aws s3 sync $(DATA_DIR)/extracted/ s3://$(S3_BUCKET)/raw
 
-
-
+## Load raw data from S3 into MotherDuck
+load-to-md:
+	S3_BUCKET=$(S3_BUCKET) envsubst < load_to_motherduck.sql | duckdb md:
