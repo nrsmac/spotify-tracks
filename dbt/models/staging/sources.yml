@@ -1,0 +1,22 @@
+version: 2
+
+sources:
+  - name: spotify_raw
+    database: spotify
+    schema: raw
+    tables:
+      - name: albums
+      - name: album_images
+      - name: artists
+      - name: artist_albums
+      - name: artist_genres
+      - name: artist_images
+      - name: artist_redirects
+      - name: available_markets
+      - name: playlists
+      - name: playlist_images
+      - name: playlist_tracks
+      - name: track_artists
+      - name: track_audio_features
+      - name: track_files
+      - name: tracks

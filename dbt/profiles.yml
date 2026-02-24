@@ -1,0 +1,6 @@
+spotify_tracks:
+  target: dev
+  outputs:
+    dev:
+      type: duckdb
+      path: "md:"
