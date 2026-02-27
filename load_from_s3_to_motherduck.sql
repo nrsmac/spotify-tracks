@@ -72,9 +72,9 @@ CREATE OR REPLACE TABLE spotify.raw.raw__playlists AS
 CREATE OR REPLACE TABLE spotify.raw.raw__track_files AS
   SELECT * FROM read_parquet('s3://${S3_BUCKET}/raw/spotify_clean_track_files_parquet/track_files.parquet');
 
--- .print [15/19] Loading artist_redirects...
--- CREATE OR REPLACE TABLE spotify.raw.raw__artist_redirects AS
---   SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_artist_redirects.json');
+.print [15/19] Loading artist_redirects...
+CREATE OR REPLACE TABLE spotify.raw.raw__artist_redirects AS
+  SELECT * FROM read_json_auto('s3://${S3_BUCKET}/raw/spotify_artist_redirects.json');
 
 -- .print [16/19] Loading audiobook_chapters...
 -- CREATE OR REPLACE TABLE spotify.raw.raw__audiobook_chapters AS
