@@ -3,4 +3,12 @@ spotify_tracks:
   outputs:
     dev:
       type: duckdb
-      path: "md:"
+      path: "md:spotify"
+      extensions:
+        - httpfs
+      settings:
+        s3_region: us-east-1
+      secrets:
+        - type: s3
+          provider: credential_chain
+

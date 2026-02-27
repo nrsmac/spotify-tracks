@@ -33,3 +33,4 @@ models:
   spotify_tracks:
     staging:
       +materialized: view
+      +schema: staging
