@@ -1,0 +1,244 @@
+version: 2
+
+models:
+  - name: stg__albums
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: album_type
+        tests:
+          - accepted_values:
+              values: ['single', 'album', 'compilation']
+      - name: popularity
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: release_date_precision
+        tests:
+          - accepted_values:
+              values: ['day', 'month', 'year']
+
+  - name: stg__album_images
+    columns:
+      - name: album_rowid
+        tests:
+          - not_null
+      - name: width
+        tests:
+          - accepted_range:
+              min_value: 1
+      - name: height
+        tests:
+          - accepted_range:
+              min_value: 1
+
+  - name: stg__artists
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: popularity
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: followers_total
+        tests:
+          - accepted_range:
+              min_value: 0
+
+  - name: stg__artist_albums
+    data_tests:
+      - unique_combination:
+          combination:
+            - artist_rowid
+            - album_rowid
+    columns:
+      - name: artist_rowid
+        tests:
+          - relationships:
+              to: ref('stg__artists')
+              field: artist_rowid
+      - name: album_rowid
+        tests:
+          - relationships:
+              to: ref('stg__albums')
+              field: album_rowid
+
+  - name: stg__artist_genres
+    columns:
+      - name: artist_rowid
+        tests:
+          - not_null
+      - name: genre
+        tests:
+          - not_null
+
+  - name: stg__artist_images
+    columns:
+      - name: artist_rowid
+        tests:
+          - not_null
+      - name: width
+        tests:
+          - accepted_range:
+              min_value: 1
+      - name: height
+        tests:
+          - accepted_range:
+              min_value: 1
+
+  - name: stg__available_markets
+    data_tests:
+      - unique_combination:
+          combination:
+            - available_markets_rowid
+            - market_code
+    columns:
+      - name: available_markets_rowid
+        tests:
+          - not_null
+      - name: market_code
+        tests:
+          - not_null
+
+  - name: stg__playlists
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: followers_total
+        tests:
+          - accepted_range:
+              min_value: 0
+
+  - name: stg__playlist_images
+    columns:
+      - name: playlist_rowid
+        tests:
+          - not_null
+      - name: width
+        tests:
+          - accepted_range:
+              min_value: 1
+      - name: height
+        tests:
+          - accepted_range:
+              min_value: 1
+
+  - name: stg__playlist_tracks
+    columns:
+      - name: playlist_rowid
+        tests:
+          - relationships:
+              to: ref('stg__playlists')
+              field: playlist_rowid
+      - name: track_rowid
+        tests:
+          - relationships:
+              to: ref('stg__tracks')
+              field: track_rowid
+              config:
+                severity: warn # tracks with duration_ms=0 are filtered from stg__tracks
+
+  - name: stg__track_artists
+    data_tests:
+      - unique_combination:
+          combination:
+            - track_rowid
+            - artist_rowid
+    columns:
+      - name: track_rowid
+        tests:
+          - relationships:
+              to: ref('stg__tracks')
+              field: track_rowid
+              config:
+                severity: warn # tracks with duration_ms=0 are filtered from stg__tracks
+      - name: artist_rowid
+        tests:
+          - relationships:
+              to: ref('stg__artists')
+              field: artist_rowid
+
+  - name: stg__track_audio_features
+    columns:
+      - name: track_id
+        tests:
+          - unique
+      - name: danceability
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: energy
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: speechiness
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: acousticness
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: instrumentalness
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: liveness
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: valence
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+      - name: key
+        tests:
+          - accepted_range:
+              min_value: -1
+              max_value: 11
+      - name: mode
+        tests:
+          - accepted_values:
+              values: [0, 1]
+      - name: time_signature
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 7
+
+  - name: stg__track_files
+    columns:
+      - name: track_id
+        tests:
+          - unique
+
+  - name: stg__tracks
+    columns:
+      - name: id
+        tests:
+          - unique
+          - not_null
+      - name: popularity
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: duration_ms
+        tests:
+          - accepted_range:
+              min_value: 1
