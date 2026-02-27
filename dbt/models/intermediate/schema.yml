@@ -1,0 +1,30 @@
+version: 2
+
+models:
+  - name: int__tracks_enriched
+    description: >
+      Tracks denormalized with album metadata and audio features.
+      Resolves the expensive string-key audio features join once for downstream marts.
+    columns:
+      - name: track_rowid
+        tests:
+          - unique
+          - not_null
+      - name: track_id
+        tests:
+          - unique
+          - not_null
+      - name: has_audio_features
+        tests:
+          - not_null
+      - name: track_popularity
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 100
+      - name: album_type
+        tests:
+          - accepted_values:
+              values: ['single', 'album', 'compilation']
+              config:
+                severity: warn
