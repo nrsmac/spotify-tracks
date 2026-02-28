@@ -35,7 +35,7 @@ track_stats as (
 album_artists as (
     select
         aa.album_rowid,
-        string_agg(a.name, ', ' order by a.name) as artist_names,
+        list(a.id order by a.name) as artist_ids,
         count(*) as artist_count
     from artist_albums aa
     inner join artists a on aa.artist_rowid = a.artist_rowid
@@ -56,7 +56,7 @@ select
     al.is_bogus_date,
     al.total_tracks,
 
-    aa.artist_names,
+    aa.artist_ids,
     aa.artist_count,
 
     ts.track_count,

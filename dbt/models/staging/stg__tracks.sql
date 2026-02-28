@@ -20,3 +20,4 @@ select
     (external_id_isrc is null or external_id_isrc = '') as is_missing_isrc -- flags 104,792 rows
 from source
 where duration_ms != 0 -- filters out 65,954 rows with zero duration
+    and rowid in {{ qualified_track_rowids() }}

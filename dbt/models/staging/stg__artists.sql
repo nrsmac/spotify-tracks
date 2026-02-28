@@ -10,3 +10,4 @@ select
     followers_total, -- >= 0 (schema.yml)
     popularity -- accepted_range 0–100 (schema.yml)
 from source
+where popularity >= {{ var('min_artist_popularity', 20) }}

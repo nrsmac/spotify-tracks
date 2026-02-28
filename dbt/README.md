@@ -2,6 +2,8 @@
 
 Transforms raw Spotify API data into analytics-ready tables on MotherDuck. The raw data covers tracks, albums, artists, playlists, and audio features extracted from Spotify's Web API.
 
+> **Note:** The raw dataset is huge (~15.4M artists, millions of tracks). By default, an artist popularity filter (`min_artist_popularity: 20`) is applied so only artists with a real following are included. This dramatically reduces the dataset to a manageable size. See [Artist popularity filter](#artist-popularity-filter) for details and how to adjust the threshold.
+
 ## Architecture
 
 The project follows a three-layer approach:
@@ -61,6 +63,19 @@ raw.*
       │    └─► mart__collaborations
       ├─► mart__genre_cooccurrence
       └─► mart__markets
+```
+
+## Artist popularity filter
+
+The raw dataset contains ~15.4M artists, but 83% have popularity 0 (completely inactive/unknown). To keep only relevant artists, staging models filter on a configurable popularity threshold.
+
+The default minimum is **20** (set in `dbt_project.yml` as `min_artist_popularity`), which keeps ~364K artists with a real following. The filter applies in `stg__artists` and cascades through junction tables (`stg__track_artists`, `stg__artist_albums`, `stg__artist_genres`) to `stg__tracks` and `stg__albums` via reusable macros in `macros/popularity_filters.sql`.
+
+Override the threshold at runtime:
+
+```bash
+dbt build --vars '{min_artist_popularity: 10}'  # more permissive
+dbt build --vars '{min_artist_popularity: 50}'  # stricter
 ```
 
 ## Usage

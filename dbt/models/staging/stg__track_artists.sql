@@ -8,3 +8,4 @@ select distinct -- deduplicates 80 duplicate (track_rowid, artist_rowid) pairs
     track_rowid, -- relationships to stg__tracks (schema.yml)
     artist_rowid -- relationships to stg__artists (schema.yml)
 from source
+where artist_rowid in {{ qualified_artist_rowids() }}

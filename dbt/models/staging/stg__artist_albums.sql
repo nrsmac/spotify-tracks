@@ -12,4 +12,5 @@ select
     is_implicit_appears_on::boolean as is_implicit_appears_on,
     index_in_album
 from source
+where artist_rowid in {{ qualified_artist_rowids() }}
 qualify row_number() over (partition by artist_rowid, album_rowid order by artist_rowid) = 1

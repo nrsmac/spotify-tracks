@@ -34,3 +34,4 @@ select
     total_tracks,
     external_id_amgid
 from source
+where rowid in {{ qualified_album_rowids() }}
