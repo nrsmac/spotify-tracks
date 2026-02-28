@@ -28,3 +28,13 @@ models:
               values: ['single', 'album', 'compilation']
               config:
                 severity: warn
+
+  - name: int__track_artist_names
+    description: >
+      Comma-separated artist names and artist count per track.
+      Isolates the expensive string_agg aggregation from downstream joins.
+    columns:
+      - name: track_rowid
+        tests:
+          - unique
+          - not_null

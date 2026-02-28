@@ -1,0 +1,130 @@
+version: 2
+
+models:
+  - name: mart__tracks
+    description: >
+      Wide track table with artist names, album metadata, and audio features.
+      One row per track.
+    columns:
+      - name: track_rowid
+        tests:
+          - unique
+          - not_null
+      - name: track_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__artists
+    description: >
+      Artist-level summary with genre lists, track/album counts, and average audio features.
+      One row per artist.
+    columns:
+      - name: artist_rowid
+        tests:
+          - unique
+          - not_null
+      - name: artist_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__albums
+    description: >
+      Album-level summary with artist names, track-level aggregates, and audio feature averages.
+      One row per album.
+    columns:
+      - name: album_rowid
+        tests:
+          - unique
+          - not_null
+      - name: album_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__genres
+    description: >
+      Genre-level summary with artist counts, track counts, and average audio features.
+      One row per genre.
+    columns:
+      - name: genre
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__genre_cooccurrence
+    description: >
+      Pairs of genres that share artists, with co-occurrence counts and Jaccard similarity.
+      One row per genre pair (genre_a < genre_b).
+    data_tests:
+      - unique_combination:
+          combination:
+            - genre_a
+            - genre_b
+    columns:
+      - name: genre_a
+        tests:
+          - not_null
+      - name: genre_b
+        tests:
+          - not_null
+      - name: jaccard_similarity
+        tests:
+          - accepted_range:
+              min_value: 0
+              max_value: 1
+
+  - name: mart__labels
+    description: >
+      Label performance metrics grouped by label and release year.
+      One row per label-year combination.
+    data_tests:
+      - unique_combination:
+          combination:
+            - label
+            - release_year
+    columns:
+      - name: label
+        tests:
+          - not_null
+      - name: release_year
+        tests:
+          - not_null
+
+  - name: mart__curators
+    description: >
+      Playlist curator summary with playlist counts, follower totals, and track quality metrics.
+      One row per curator (owner_id).
+    columns:
+      - name: owner_id
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__markets
+    description: >
+      Market-level statistics with track and album counts and average popularity.
+      One row per market code.
+    columns:
+      - name: market_code
+        tests:
+          - unique
+          - not_null
+
+  - name: mart__collaborations
+    description: >
+      Artist collaboration pairs with shared track counts and popularity metrics.
+      One row per artist pair (artist_a < artist_b).
+    data_tests:
+      - unique_combination:
+          combination:
+            - artist_a_rowid
+            - artist_b_rowid
+    columns:
+      - name: artist_a_rowid
+        tests:
+          - not_null
+      - name: artist_b_rowid
+        tests:
+          - not_null
